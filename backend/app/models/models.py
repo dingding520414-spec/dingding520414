@@ -119,6 +119,7 @@ class Exercise(Base):
     description = Column(Text, nullable=True)
     reps = Column(Integer, nullable=True)
     duration_sec = Column(Integer, nullable=True)
+    video_url = Column(Text, nullable=True)
     video_timestamp = Column(Integer, nullable=True)
     order_index = Column(Integer, default=0)
     created_at = Column(DateTime, default=datetime.utcnow)

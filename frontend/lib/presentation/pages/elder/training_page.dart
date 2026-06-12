@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../data/models/course.dart';
 import '../../providers/training_provider.dart';
@@ -17,7 +18,9 @@ class TrainingPage extends ConsumerStatefulWidget {
 
 class _TrainingPageState extends ConsumerState<TrainingPage> {
   VideoPlayerController? _videoController;
+  YoutubePlayerController? _youtubeController;
   bool _isVideoInitialized = false;
+  bool _isYoutube = false;
   int _currentExerciseIndex = 0;
   int _elapsedSeconds = 0;
   Timer? _timer;
@@ -30,13 +33,39 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
   }
 
   Future<void> _initializeVideo() async {
-    if (widget.course.videoUrl != null) {
-      _videoController = VideoPlayerController.networkUrl(
-        Uri.parse(widget.course.videoUrl!),
-      );
+    if (widget.course.videoUrl == null) return;
+    final url = widget.course.videoUrl!;
+    if (url.contains('youtube.com') || url.contains('youtu.be')) {
+      // YouTube video
+      _isYoutube = true;
+      final videoId = _extractYoutubeId(url);
+      if (videoId != null) {
+        _youtubeController = YoutubePlayerController.fromVideoId(
+          videoId: videoId,
+          autoPlay: false,
+        );
+        setState(() => _isVideoInitialized = true);
+      }
+    } else {
+      // Direct video URL
+      _isYoutube = false;
+      _videoController = VideoPlayerController.networkUrl(Uri.parse(url));
       await _videoController!.initialize();
       setState(() => _isVideoInitialized = true);
     }
+  }
+
+  String? _extractYoutubeId(String url) {
+    final patterns = [
+      RegExp(r'youtube\.com/embed/([^?&]+)'),
+      RegExp(r'youtube\.com/watch\?v=([^&]+)'),
+      RegExp(r'youtu\.be/([^?]+)'),
+    ];
+    for (final p in patterns) {
+      final m = p.firstMatch(url);
+      if (m != null) return m.group(1);
+    }
+    return null;
   }
 
   void _startTraining() async {
@@ -137,11 +166,13 @@ class _TrainingPageState extends ConsumerState<TrainingPage> {
             height: MediaQuery.of(context).size.height * 0.4,
             width: double.infinity,
             color: Colors.black,
-            child: _isVideoInitialized && _videoController != null
+            child: _isVideoInitialized && !_isYoutube && _videoController != null
                 ? AspectRatio(
                     aspectRatio: _videoController!.value.aspectRatio,
                     child: VideoPlayer(_videoController!),
                   )
+                : _isVideoInitialized && _isYoutube && _youtubeController != null
+                ? YoutubePlayer(controller: _youtubeController!)
                 : const Center(
                     child: Icon(
                       Icons.play_circle_outline,
