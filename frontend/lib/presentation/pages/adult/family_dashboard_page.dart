@@ -323,10 +323,10 @@ class FamilyDashboardPage extends ConsumerWidget {
                 spacing: 8,
                 runSpacing: 8,
                 children: [
-                  _buildEmojiButton('👍', '加油！'),
-                  _buildEmojiButton('❤️', '我们支持你'),
-                  _buildEmojiButton('🎉', '太棒了！'),
-                  _buildEmojiButton('💪', '继续坚持'),
+                  _buildEmojiButton(context, '👍', '加油！'),
+                  _buildEmojiButton(context, '❤️', '我们支持你'),
+                  _buildEmojiButton(context, '🎉', '太棒了！'),
+                  _buildEmojiButton(context, '💪', '继续坚持'),
                 ],
               ),
             ],
@@ -336,7 +336,7 @@ class FamilyDashboardPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildEmojiButton(String emoji, String label) {
+  Widget _buildEmojiButton(BuildContext context, String emoji, String label) {
     return ActionChip(
       label: Row(
         mainAxisSize: MainAxisSize.min,
