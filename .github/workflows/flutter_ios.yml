@@ -1,0 +1,47 @@
+name: Flutter iOS Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build_ios:
+    runs-on: macos-14
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          xcode-version: '15.0'
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          flutter pub get
+
+      - name: Install iOS dependencies
+        run: |
+          cd frontend/ios
+          pod install --repo-update
+
+      - name: Build iOS (Simulator)
+        run: |
+          cd frontend
+          flutter build ios --simulator --no-codesign 2>&1
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build
+          path: |
+            frontend/build/ios/iphonesimulator/
+            frontend/build/ios/iphonesimulator/Runner.app
+          retention-days: 7
