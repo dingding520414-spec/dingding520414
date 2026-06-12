@@ -4,7 +4,6 @@ import 'core/theme/app_theme.dart';
 import 'core/network/api_client.dart';
 import 'presentation/providers/auth_provider.dart';
 import 'presentation/pages/elder/home_page.dart';
-import 'presentation/pages/adult/family_dashboard_page.dart';
 import 'presentation/pages/auth/login_page.dart';
 
 class SeniorStrengthApp extends ConsumerStatefulWidget {

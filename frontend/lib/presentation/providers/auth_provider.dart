@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../core/network/api_client.dart';
 import '../../data/models/user.dart';
 
@@ -7,7 +6,6 @@ final authStateProvider =
     AsyncNotifierProvider<AuthNotifier, User?>(() => AuthNotifier());
 
 class AuthNotifier extends AsyncNotifier<User?> {
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
   @override
   Future<User?> build() async {

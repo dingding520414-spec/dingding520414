@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'dart:ui' as ui;
 
 // Note: MediaPipe Pose requires native integration.
