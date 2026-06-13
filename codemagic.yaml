@@ -1,0 +1,90 @@
+workflows:
+  ios-debug:
+    name: iOS Debug Build
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+      groups:
+        - codemagic
+    cache:
+      cache_paths:
+        - ~/.pub-cache
+        - ios/Pods
+        - ~/Library/Developer/Xcode/DerivedData
+    triggering:
+      events:
+        - push
+        - pull_request
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+    scripts:
+      - name: Fetch dependencies
+        script: |
+          flutter pub get
+      - name: Set iOS simulator destination
+        script: |
+          xcrun simctl list devices available | head -20
+          echo "SIMULATOR_TARGET=platform=iOS Simulator,name=iPhone 15" >> "$CM_ENV"
+      - name: Build iOS for simulator
+        script: |
+          flutter build ios --simulator --no-codesign 2>&1
+    artifacts:
+      - build/ios/iphonesimulator/Runner.app
+    publishing:
+      email:
+        recipients:
+          - dingding520414@hotmail.com
+        notify:
+          success: true
+          failure: true
+
+  ios-release:
+    name: iOS Release Build
+    max_build_duration: 90
+    instance_type: mac_mini_m2
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+      groups:
+        - codemagic
+    cache:
+      cache_paths:
+        - ~/.pub-cache
+        - ios/Pods
+        - ~/Library/Developer/Xcode/DerivedData
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: master
+          include: true
+          source: true
+        - pattern: release/*
+          include: true
+          source: true
+      cancel_previous_builds: true
+    scripts:
+      - name: Fetch dependencies
+        script: |
+          flutter pub get
+      - name: Set iOS simulator destination
+        script: |
+          echo "SIMULATOR_TARGET=platform=iOS Simulator,name=iPhone 15" >> "$CM_ENV"
+      - name: Build iOS for simulator
+        script: |
+          flutter build ios --simulator --no-codesign 2>&1
+    artifacts:
+      - build/ios/iphonesimulator/Runner.app
+    publishing:
+      email:
+        recipients:
+          - dingding520414@hotmail.com
+        notify:
+          success: true
+          failure: true
