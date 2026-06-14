@@ -9,11 +9,10 @@ workflows:
       cocoapods: default
       groups:
         - codemagic
-      working_directory: frontend
     cache:
       cache_paths:
         - ~/.pub-cache
-        - ios/Pods
+        - frontend/ios/Pods
         - ~/Library/Developer/Xcode/DerivedData
     triggering:
       events:
@@ -26,16 +25,16 @@ workflows:
     scripts:
       - name: Fetch dependencies
         script: |
-          flutter pub get
+          cd frontend && flutter pub get
       - name: Set iOS simulator destination
         script: |
           xcrun simctl list devices available | head -20
           echo "SIMULATOR_TARGET=platform=iOS Simulator,name=iPhone 15" >> "$CM_ENV"
       - name: Build iOS for simulator
         script: |
-          flutter build ios --simulator --no-codesign 2>&1
+          cd frontend && flutter build ios --simulator --no-codesign 2>&1
     artifacts:
-      - build/ios/iphonesimulator/Runner.app
+      - frontend/build/ios/iphonesimulator/Runner.app
     publishing:
       email:
         recipients:
@@ -54,11 +53,10 @@ workflows:
       cocoapods: default
       groups:
         - codemagic
-      working_directory: frontend
     cache:
       cache_paths:
         - ~/.pub-cache
-        - ios/Pods
+        - frontend/ios/Pods
         - ~/Library/Developer/Xcode/DerivedData
     triggering:
       events:
@@ -74,15 +72,15 @@ workflows:
     scripts:
       - name: Fetch dependencies
         script: |
-          flutter pub get
+          cd frontend && flutter pub get
       - name: Set iOS simulator destination
         script: |
           echo "SIMULATOR_TARGET=platform=iOS Simulator,name=iPhone 15" >> "$CM_ENV"
       - name: Build iOS for simulator
         script: |
-          flutter build ios --simulator --no-codesign 2>&1
+          cd frontend && flutter build ios --simulator --no-codesign 2>&1
     artifacts:
-      - build/ios/iphonesimulator/Runner.app
+      - frontend/build/ios/iphonesimulator/Runner.app
     publishing:
       email:
         recipients:
