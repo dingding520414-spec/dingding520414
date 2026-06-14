@@ -23,16 +23,12 @@ workflows:
           include: true
           source: true
     scripts:
-      - name: Fetch dependencies
+      - name: Build iOS
         script: |
-          cd frontend && flutter pub get
-      - name: Set iOS simulator destination
-        script: |
+          cd frontend
+          flutter pub get
           xcrun simctl list devices available | head -20
-          echo "SIMULATOR_TARGET=platform=iOS Simulator,name=iPhone 15" >> "$CM_ENV"
-      - name: Build iOS for simulator
-        script: |
-          cd frontend && flutter build ios --simulator --no-codesign 2>&1
+          flutter build ios --simulator --no-codesign 2>&1
     artifacts:
       - frontend/build/ios/iphonesimulator/Runner.app
     publishing:
@@ -70,15 +66,12 @@ workflows:
           source: true
       cancel_previous_builds: true
     scripts:
-      - name: Fetch dependencies
+      - name: Build iOS
         script: |
-          cd frontend && flutter pub get
-      - name: Set iOS simulator destination
-        script: |
-          echo "SIMULATOR_TARGET=platform=iOS Simulator,name=iPhone 15" >> "$CM_ENV"
-      - name: Build iOS for simulator
-        script: |
-          cd frontend && flutter build ios --simulator --no-codesign 2>&1
+          cd frontend
+          flutter pub get
+          xcrun simctl list devices available | head -20
+          flutter build ios --simulator --no-codesign 2>&1
     artifacts:
       - frontend/build/ios/iphonesimulator/Runner.app
     publishing:
