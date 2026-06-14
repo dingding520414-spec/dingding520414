@@ -12,7 +12,6 @@ workflows:
     cache:
       cache_paths:
         - ~/.pub-cache
-        - ~/Library/Developer/Xcode/DerivedData
     triggering:
       events:
         - push
@@ -22,10 +21,16 @@ workflows:
           include: true
           source: true
     scripts:
+      - name: Clean all build artifacts
+        script: |
+          cd frontend
+          rm -rf ios/Pods ios/Podfile.lock ios/.symlinks build .dart_tool
+          rm -rf ~/Library/Developer/Xcode/DerivedData/Runner-*
       - name: Fetch dependencies
         script: |
           cd frontend
           flutter pub get
+          cd ios && pod install && cd ..
       - name: Build iOS
         script: |
           cd frontend
@@ -54,7 +59,6 @@ workflows:
     cache:
       cache_paths:
         - ~/.pub-cache
-        - ~/Library/Developer/Xcode/DerivedData
     triggering:
       events:
         - push
@@ -67,10 +71,16 @@ workflows:
           source: true
       cancel_previous_builds: true
     scripts:
+      - name: Clean all build artifacts
+        script: |
+          cd frontend
+          rm -rf ios/Pods ios/Podfile.lock ios/.symlinks build .dart_tool
+          rm -rf ~/Library/Developer/Xcode/DerivedData/Runner-*
       - name: Fetch dependencies
         script: |
           cd frontend
           flutter pub get
+          cd ios && pod install && cd ..
       - name: Build iOS
         script: |
           cd frontend
