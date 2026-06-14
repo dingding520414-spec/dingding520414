@@ -9,6 +9,7 @@ workflows:
       cocoapods: default
       groups:
         - codemagic
+      working_directory: frontend
     cache:
       cache_paths:
         - ~/.pub-cache
@@ -53,6 +54,7 @@ workflows:
       cocoapods: default
       groups:
         - codemagic
+      working_directory: frontend
     cache:
       cache_paths:
         - ~/.pub-cache
