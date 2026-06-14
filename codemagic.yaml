@@ -12,7 +12,6 @@ workflows:
     cache:
       cache_paths:
         - ~/.pub-cache
-        - frontend/ios/Pods
         - ~/Library/Developer/Xcode/DerivedData
     triggering:
       events:
@@ -23,10 +22,13 @@ workflows:
           include: true
           source: true
     scripts:
-      - name: Build iOS
+      - name: Fetch dependencies
         script: |
           cd frontend
           flutter pub get
+      - name: Build iOS
+        script: |
+          cd frontend
           xcrun simctl list devices available | head -20
           flutter build ios --simulator --no-codesign 2>&1
     artifacts:
@@ -52,7 +54,6 @@ workflows:
     cache:
       cache_paths:
         - ~/.pub-cache
-        - frontend/ios/Pods
         - ~/Library/Developer/Xcode/DerivedData
     triggering:
       events:
@@ -66,10 +67,13 @@ workflows:
           source: true
       cancel_previous_builds: true
     scripts:
-      - name: Build iOS
+      - name: Fetch dependencies
         script: |
           cd frontend
           flutter pub get
+      - name: Build iOS
+        script: |
+          cd frontend
           xcrun simctl list devices available | head -20
           flutter build ios --simulator --no-codesign 2>&1
     artifacts:
