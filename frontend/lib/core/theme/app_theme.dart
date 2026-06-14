@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AppColors {
   // Primary
@@ -31,6 +30,18 @@ class AppColors {
 }
 
 class AppTheme {
+  static TextStyle _textStyle({
+    double fontSize = 16,
+    FontWeight fontWeight = FontWeight.normal,
+    Color? color,
+  }) {
+    return TextStyle(
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      color: color ?? AppColors.textPrimary,
+    );
+  }
+
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
@@ -42,72 +53,28 @@ class AppTheme {
         error: AppColors.error,
       ),
       scaffoldBackgroundColor: AppColors.background,
-      textTheme: GoogleFonts.nunitoTextTheme().copyWith(
-        displayLarge: GoogleFonts.nunito(
-          fontSize: 32,
-          fontWeight: FontWeight.bold,
-          color: AppColors.textPrimary,
-        ),
-        displayMedium: GoogleFonts.nunito(
-          fontSize: 28,
-          fontWeight: FontWeight.bold,
-          color: AppColors.textPrimary,
-        ),
-        displaySmall: GoogleFonts.nunito(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: AppColors.textPrimary,
-        ),
-        headlineLarge: GoogleFonts.nunito(
-          fontSize: 22,
-          fontWeight: FontWeight.w600,
-          color: AppColors.textPrimary,
-        ),
-        headlineMedium: GoogleFonts.nunito(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: AppColors.textPrimary,
-        ),
-        headlineSmall: GoogleFonts.nunito(
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-          color: AppColors.textPrimary,
-        ),
-        bodyLarge: GoogleFonts.nunito(
-          fontSize: 18,
-          fontWeight: FontWeight.normal,
-          color: AppColors.textPrimary,
-        ),
-        bodyMedium: GoogleFonts.nunito(
-          fontSize: 16,
-          fontWeight: FontWeight.normal,
-          color: AppColors.textPrimary,
-        ),
-        bodySmall: GoogleFonts.nunito(
-          fontSize: 14,
-          fontWeight: FontWeight.normal,
-          color: AppColors.textSecondary,
-        ),
-        labelLarge: GoogleFonts.nunito(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-          color: AppColors.textPrimary,
-        ),
+      textTheme: TextTheme(
+        displayLarge: _textStyle(fontSize: 32, fontWeight: FontWeight.bold),
+        displayMedium: _textStyle(fontSize: 28, fontWeight: FontWeight.bold),
+        displaySmall: _textStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        headlineLarge: _textStyle(fontSize: 22, fontWeight: FontWeight.w600),
+        headlineMedium: _textStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        headlineSmall: _textStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        bodyLarge: _textStyle(fontSize: 18),
+        bodyMedium: _textStyle(fontSize: 16),
+        bodySmall: _textStyle(fontSize: 14, color: AppColors.textSecondary),
+        labelLarge: _textStyle(fontSize: 16, fontWeight: FontWeight.w600),
       ),
       appBarTheme: AppBarTheme(
         elevation: 0,
         centerTitle: true,
         backgroundColor: AppColors.surface,
         foregroundColor: AppColors.textPrimary,
-        titleTextStyle: GoogleFonts.nunito(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: AppColors.textPrimary,
-        ),
+        titleTextStyle: _textStyle(fontSize: 20, fontWeight: FontWeight.w600),
       ),
       cardTheme: CardThemeData(
         elevation: 2,
-        shadowColor: AppColors.textTertiary.withOpacity(0.1),
+        shadowColor: AppColors.textTertiary.withValues(alpha: 0.1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
@@ -120,10 +87,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: GoogleFonts.nunito(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
+          textStyle: _textStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -134,10 +98,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(12),
           ),
           side: const BorderSide(color: AppColors.primary, width: 2),
-          textStyle: GoogleFonts.nunito(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
+          textStyle: _textStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -150,7 +111,7 @@ class AppTheme {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: AppColors.textTertiary.withOpacity(0.5)),
+          borderSide: BorderSide(color: AppColors.textTertiary.withValues(alpha: 0.5)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -160,10 +121,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppColors.error),
         ),
-        labelStyle: GoogleFonts.nunito(
-          fontSize: 16,
-          color: AppColors.textSecondary,
-        ),
+        labelStyle: _textStyle(fontSize: 16, color: AppColors.textSecondary),
       ),
     );
   }

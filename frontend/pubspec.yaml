@@ -27,7 +27,7 @@ dependencies:
   
   # UI
   cupertino_icons: ^1.0.6
-  google_fonts: ^5.1.0
+  # google_fonts: ^6.1.0  # removed - incompatible with Dart 3.4
   flutter_svg: ^2.0.9
   
   # Video Player
