@@ -5,5 +5,6 @@ from .training import router as training
 from .family import router as family
 from .subscription import router as subscription
 from .webhooks import router as webhooks
+from .reminders import router as reminders
 
 __all__ = ["auth", "users", "courses", "training", "family", "subscription", "webhooks"]

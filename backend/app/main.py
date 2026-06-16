@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from app.core.config import get_settings
 from app.db.database import init_db, close_db
-from app.api.v1.endpoints import auth, users, courses, training, family, subscription, webhooks
+from app.api.v1.endpoints import auth, users, courses, training, family, subscription, webhooks, reminders
 
 settings = get_settings()
 
@@ -43,6 +43,7 @@ app.include_router(training, prefix="/api/v1/training", tags=["training"])
 app.include_router(family, prefix="/api/v1/family", tags=["family"])
 app.include_router(subscription, prefix="/api/v1/subscription", tags=["subscription"])
 app.include_router(webhooks, prefix="/api/v1/webhooks", tags=["webhooks"])
+app.include_router(reminders, prefix="/api/v1/reminders", tags=["reminders"])
 
 
 @app.get("/health")
