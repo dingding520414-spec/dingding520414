@@ -21,6 +21,17 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Listen for state changes to show snackbars after widget is mounted
+    ref.listen<SubscriptionState>(subscriptionProvider, (prev, next) {
+      if (next.mockModeSuccess || (next.error != null && next.error != prev?.error)) {
+        _showSubscriptionSnackBar(next);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final state = ref.watch(subscriptionProvider);
 
@@ -473,15 +484,33 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
   }
 
   void _onSubscribe(String planType, String interval) {
-    // TODO: Implement actual Stripe checkout
     ref.read(subscriptionProvider.notifier).subscribe(planType, interval);
+  }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('正在跳转到支付页面...'),
-        backgroundColor: Colors.blue,
-      ),
-    );
+  void _showSubscriptionSnackBar(SubscriptionState state) {
+    if (state.mockModeSuccess) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.check_circle, color: Colors.white),
+              const SizedBox(width: 8),
+              Text('🎉 7天免费试用已激活！'),
+            ],
+          ),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 4),
+        ),
+      );
+      ref.read(subscriptionProvider.notifier).clearMockSuccess();
+    } else if (state.error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('订阅失败: ${state.error}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   String _formatDate(DateTime date) {

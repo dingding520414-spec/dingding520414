@@ -172,10 +172,12 @@ class Subscription(Base):
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
     user_id = Column(GUID(), ForeignKey("users.id"), nullable=False, unique=True)
     plan_type = Column(String(20), default="free")  # 'free', 'personal', 'family'
-    status = Column(String(20), default="active")  # 'active', 'cancelled', 'expired'
+    status = Column(String(20), default="active")  # 'active', 'cancelled', 'expired', 'trialing'
     stripe_subscription_id = Column(String(255), nullable=True)
+    stripe_customer_id = Column(String(255), nullable=True)
     current_period_start = Column(DateTime, nullable=True)
     current_period_end = Column(DateTime, nullable=True)
+    trial_end_date = Column(DateTime, nullable=True)  # Free trial end date (7 days from activation)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

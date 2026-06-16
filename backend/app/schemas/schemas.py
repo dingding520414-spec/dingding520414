@@ -226,6 +226,7 @@ class SubscriptionResponse(BaseModel):
     status: str
     current_period_start: Optional[datetime] = None
     current_period_end: Optional[datetime] = None
+    trial_end_date: Optional[datetime] = None
 
     class Config:
         from_attributes = True
@@ -236,6 +237,7 @@ class SubscriptionStatusResponse(BaseModel):
     plan_type: str
     is_active: bool
     current_period_end: Optional[datetime] = None
+    trial_days_remaining: int = 0
 
 
 # Update forward references

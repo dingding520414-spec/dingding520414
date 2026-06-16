@@ -199,9 +199,10 @@ class ApiClient {
   }
 
   // Subscription
-  Future<Map<String, dynamic>> createSubscription(String planType) async {
+  Future<Map<String, dynamic>> createSubscription(String planType, {String interval = 'month'}) async {
     final response = await _dio.post('/subscription/create', data: {
       'plan_type': planType,
+      'interval': interval,
     });
     return response.data;
   }
