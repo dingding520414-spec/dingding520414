@@ -1,89 +1,59 @@
-#!/usr/bin/env python3
 """
-Update video URLs for courses and exercises.
-Usage:
-  python update_video_urls.py --course "椅子深蹲入门" --url "https://youtube.com/watch?v=XXX"
-  python update_video_urls.py --course "椅子深蹲入门" --exercise "热身 - 关节活动" --url "https://youtube.com/watch?v=XXX"
+更新课程视频URL
+视频文件已保存到 videos/ 目录
 """
-import argparse
 import os
-import sys
+import sqlite3
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+VIDEO_DIR = "/home/admin1234/.openclaw/workspace/projects/senior-strength-app/videos"
 
-from sqlalchemy import create_engine, text
-from sqlalchemy.orm import Session
-from app.core.config import get_settings
+# 视频文件映射到课程ID
+# 格式: course_id: video_filename
+COURSE_VIDEOS = {
+    1: "01_chair_squat.mp4",           # 椅子深蹲入门
+    2: "02_wall_pushup.mp4",           # 墙壁俯卧撑
+    3: "06_resistance_band_fullbody.mp4",  # 弹力带全身组合 (复用)
+    4: "06_resistance_band_fullbody.mp4",  # 弹力带腿部训练 (复用)
+    5: "03_seated_leg.mp4",            # 坐姿腿举训练
+    6: "dumbbell_lateral.mp4",         # 哑铃入门 (待生成)
+    7: "04_bodyweight_squat.mp4",      # 自重深蹲基础
+    8: "05_wall_pushup_advanced.mp4",  # 墙壁俯卧撑进阶
+    9: "06_resistance_band_fullbody.mp4",  # 弹力带全身组合
+    10: "balance_stability.mp4",        # 平衡与稳定训练 (待生成)
+}
 
-settings = get_settings()
-sync_engine = create_engine(settings.SYNC_DATABASE_URL)
-
-def update_course_video_url(course_title: str, video_url: str):
-    with Session(sync_engine) as session:
-        result = session.execute(
-            text("SELECT id FROM courses WHERE title = :title"),
-            {"title": course_title}
-        )
-        row = result.fetchone()
-        if not row:
-            print(f"Course not found: {course_title}")
-            return False
-        course_id = row[0]
-        session.execute(
-            text("UPDATE courses SET video_url = :url WHERE id = :id"),
-            {"url": video_url, "id": str(course_id)}
-        )
-        session.commit()
-        print(f"Updated course '{course_title}' (id={course_id}) with video_url: {video_url}")
-        return True
-
-def update_exercise_video_url(course_title: str, exercise_name: str, video_url: str):
-    with Session(sync_engine) as session:
-        result = session.execute(
-            text("""
-                SELECT e.id FROM exercises e
-                JOIN courses c ON e.course_id = c.id
-                WHERE c.title = :course_title AND e.name = :exercise_name
-            """),
-            {"course_title": course_title, "exercise_name": exercise_name}
-        )
-        row = result.fetchone()
-        if not row:
-            print(f"Exercise not found: {exercise_name} in course {course_title}")
-            return False
-        exercise_id = row[0]
-        session.execute(
-            text("UPDATE exercises SET video_url = :url WHERE id = :id"),
-            {"url": video_url, "id": str(exercise_id)}
-        )
-        session.commit()
-        print(f"Updated exercise '{exercise_name}' (id={exercise_id}) with video_url: {video_url}")
-        return True
-
-def list_courses():
-    with Session(sync_engine) as session:
-        result = session.execute(text("SELECT id, title, video_url FROM courses ORDER BY title"))
-        print("\nCourses in database:")
-        print(f"{'ID':<40} {'Title':<30} {'Video URL'}")
-        print("-" * 90)
-        for row in result:
-            print(f"{str(row[0]):<40} {row[1]:<30} {row[2] or '(no video)'}")
-        print()
+def update_video_urls():
+    db_path = "/home/admin1234/.openclaw/workspace/projects/senior-strength-app/backend/senior_strength.db"
+    
+    if not os.path.exists(db_path):
+        print(f"数据库不存在: {db_path}")
+        return
+    
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    
+    # 检查表是否存在
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='courses'")
+    if not cursor.fetchone():
+        print("数据库中没有 courses 表")
+        conn.close()
+        return
+    
+    updated = 0
+    for course_id, video_file in COURSE_VIDEOS.items():
+        video_path = os.path.join(VIDEO_DIR, video_file)
+        if os.path.exists(video_path):
+            # 使用 file:// URL
+            video_url = f"file://{video_path}"
+            cursor.execute("UPDATE courses SET video_url = ? WHERE id = ?", (video_url, course_id))
+            updated += 1
+            print(f"Updated course {course_id}: {video_file}")
+        else:
+            print(f"Video not found for course {course_id}: {video_path}")
+    
+    conn.commit()
+    print(f"\n✅ 成功更新 {updated} 个课程的视频URL")
+    conn.close()
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Update video URLs for courses/exercises")
-    parser.add_argument("--course", help="Course title")
-    parser.add_argument("--exercise", help="Exercise name (optional)")
-    parser.add_argument("--url", help="YouTube video URL")
-    parser.add_argument("--list", action="store_true", help="List all courses")
-    args = parser.parse_args()
-
-    if args.list:
-        list_courses()
-    elif args.course and args.url:
-        if args.exercise:
-            update_exercise_video_url(args.course, args.exercise, args.url)
-        else:
-            update_course_video_url(args.course, args.url)
-    else:
-        parser.print_help()
+    update_video_urls()
