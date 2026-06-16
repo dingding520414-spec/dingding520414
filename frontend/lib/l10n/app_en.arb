@@ -1,0 +1,205 @@
+{
+  "@@locale": "en",
+  "appTitle": "SeniorStrength",
+  "@appTitle": {
+    "description": "The application title"
+  },
+  "strengthTraining": "Strength Training",
+  "@strengthTraining": {
+    "description": "Home page title"
+  },
+  "noCourses": "No courses available",
+  "@noCourses": {
+    "description": "Empty state message"
+  },
+  "loadFailed": "Load failed: {error}",
+  "@loadFailed": {
+    "description": "Error message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionTitle": "Subscription Plans",
+  "@subscriptionTitle": {
+    "description": "Subscription page title"
+  },
+  "freeTrialActivated": "🎉 Free 7-day trial activated!",
+  "@freeTrialActivated": {
+    "description": "Success message for trial activation"
+  },
+  "subscriptionFailed": "Subscription failed: {error}",
+  "@subscriptionFailed": {
+    "description": "Subscription error message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "personalPlan": "💪 Personal Plan",
+  "@personalPlan": {
+    "description": "Personal subscription plan name"
+  },
+  "familyPlan": "🏆 Family Guardian Plan",
+  "@familyPlan": {
+    "description": "Family subscription plan name"
+  },
+  "personalPlanDesc": "AI personal trainer - correct movements, no injuries",
+  "@personalPlanDesc": {
+    "description": "Personal plan description"
+  },
+  "familyPlanDesc": "Give parents a private trainer + 24/7 health guardian",
+  "@familyPlanDesc": {
+    "description": "Family plan description"
+  },
+  "monthly": "Monthly",
+  "@monthly": {
+    "description": "Monthly billing"
+  },
+  "yearly": "Yearly",
+  "@yearly": {
+    "description": "Yearly billing"
+  },
+  "perMonth": "${price}/month",
+  "@perMonth": {
+    "description": "Price per month",
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "startFreeTrial": "Start Free Trial",
+  "@startFreeTrial": {
+    "description": "CTA button for free trial"
+  },
+  "selectPlan": "Select Plan",
+  "@selectPlan": {
+    "description": "CTA button for plan selection"
+  },
+  "loginTitle": "Welcome Back",
+  "@loginTitle": {
+    "description": "Login page title"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Email field label"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Password field label"
+  },
+  "login": "Login",
+  "@login": {
+    "description": "Login button"
+  },
+  "register": "Register",
+  "@register": {
+    "description": "Register button"
+  },
+  "courseDuration": "{minutes} min",
+  "@courseDuration": {
+    "description": "Course duration",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "beginner": "Beginner",
+  "@beginner": {
+    "description": "Beginner difficulty level"
+  },
+  "intermediate": "Intermediate",
+  "@intermediate": {
+    "description": "Intermediate difficulty level"
+  },
+  "advanced": "Advanced",
+  "@advanced": {
+    "description": "Advanced difficulty level"
+  },
+  "startTraining": "Start Training",
+  "@startTraining": {
+    "description": "Start training button"
+  },
+  "completeTraining": "Complete Training",
+  "@completeTraining": {
+    "description": "Complete training button"
+  },
+  "aiFeedback": "AI Feedback",
+  "@aiFeedback": {
+    "description": "AI feedback section title"
+  },
+  "score": "Score: {score}",
+  "@score": {
+    "description": "Score display",
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "perfectScore": "Perfect! Keep it up!",
+  "@perfectScore": {
+    "description": "Perfect score feedback"
+  },
+  "familyMonitoring": "Family Monitoring",
+  "@familyMonitoring": {
+    "description": "Family monitoring feature title"
+  },
+  "generateBindCode": "Generate Bind Code",
+  "@generateBindCode": {
+    "description": "Generate family bind code button"
+  },
+  "bindCode": "Bind Code: {code}",
+  "@bindCode": {
+    "description": "Display bind code",
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings page title"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Language setting"
+  },
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Notifications setting"
+  },
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout button"
+  },
+  "welcome": "Welcome",
+  "@welcome": {
+    "description": "Welcome greeting"
+  },
+  "upgradeToPremium": "🏠 Upgrade to Family Guardian",
+  "@upgradeToPremium": {
+    "description": "Premium upgrade banner text"
+  },
+  "aiRealTimeFeedback": "AI real-time feedback +子女查看训练进度",
+  "@aiRealTimeFeedback": {
+    "description": "Banner subtitle"
+  },
+  "familyPlanFeature": "Family plan - up to 4 members",
+  "@familyPlanFeature": {
+    "description": "Banner feature text"
+  },
+  "only": "Only",
+  "@only": {
+    "description": "Price prefix"
+  },
+  "chooseYourHealthPlan": "Choose Your Health Guardian Plan",
+  "@chooseYourHealthPlan": {
+    "description": "Subscription page header"
+  }
+}

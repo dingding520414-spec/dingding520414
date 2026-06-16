@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/locale_provider.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -38,7 +40,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('登录失败: ${e.toString()}'),
+            content: Text('Login failed: ${e.toString()}'),
             backgroundColor: AppColors.error,
           ),
         );
@@ -52,6 +54,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final currentLocale = ref.watch(localeProvider);
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -62,6 +67,26 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 60),
+                // Language Toggle
+                Align(
+                  alignment: Alignment.topRight,
+                  child: TextButton(
+                    onPressed: () {
+                      ref.read(localeProvider.notifier).toggleLocale();
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.language, size: 20),
+                        const SizedBox(width: 4),
+                        Text(
+                          currentLocale.languageCode == 'zh' ? 'EN' : '中文',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 // Logo and Title
                 const Icon(
                   Icons.fitness_center,
@@ -70,7 +95,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  'SeniorStrength',
+                  l10n.appTitle,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.displaySmall?.copyWith(
                         color: AppColors.primary,
@@ -79,7 +104,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  '中老年力量训练',
+                  currentLocale.languageCode == 'zh' 
+                      ? '中老年力量训练' 
+                      : 'Strength Training for Seniors',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: AppColors.textSecondary,
@@ -91,16 +118,20 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   style: const TextStyle(fontSize: 18),
-                  decoration: const InputDecoration(
-                    labelText: '邮箱',
-                    prefixIcon: Icon(Icons.email_outlined),
+                  decoration: InputDecoration(
+                    labelText: l10n.email,
+                    prefixIcon: const Icon(Icons.email_outlined),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '请输入邮箱';
+                      return currentLocale.languageCode == 'zh' 
+                          ? '请输入邮箱' 
+                          : 'Please enter email';
                     }
                     if (!value.contains('@')) {
-                      return '请输入有效的邮箱';
+                      return currentLocale.languageCode == 'zh' 
+                          ? '请输入有效的邮箱' 
+                          : 'Please enter a valid email';
                     }
                     return null;
                   },
@@ -112,7 +143,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   obscureText: _obscurePassword,
                   style: const TextStyle(fontSize: 18),
                   decoration: InputDecoration(
-                    labelText: '密码',
+                    labelText: l10n.password,
                     prefixIcon: const Icon(Icons.lock_outlined),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -127,10 +158,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '请输入密码';
+                      return currentLocale.languageCode == 'zh' 
+                          ? '请输入密码' 
+                          : 'Please enter password';
                     }
                     if (value.length < 6) {
-                      return '密码至少6位';
+                      return currentLocale.languageCode == 'zh' 
+                          ? '密码至少6位' 
+                          : 'Password must be at least 6 characters';
                     }
                     return null;
                   },
@@ -148,7 +183,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             color: Colors.white,
                           ),
                         )
-                      : const Text('登录'),
+                      : Text(l10n.login),
                 ),
                 const SizedBox(height: 16),
                 // Register Link
@@ -160,7 +195,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
                     );
                   },
-                  child: const Text('还没有账号？立即注册'),
+                  child: Text(
+                    currentLocale.languageCode == 'zh' 
+                        ? '还没有账号？立即注册' 
+                        : "Don't have an account? Register",
+                  ),
                 ),
               ],
             ),
@@ -211,7 +250,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('注册失败: ${e.toString()}'),
+            content: Text('Registration failed: ${e.toString()}'),
             backgroundColor: AppColors.error,
           ),
         );
@@ -225,9 +264,12 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isZh = Localizations.localeOf(context).languageCode == 'zh';
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('注册'),
+        title: Text(l10n.register),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -242,13 +284,13 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 TextFormField(
                   controller: _nameController,
                   style: const TextStyle(fontSize: 18),
-                  decoration: const InputDecoration(
-                    labelText: '姓名',
-                    prefixIcon: Icon(Icons.person_outlined),
+                  decoration: InputDecoration(
+                    labelText: isZh ? '姓名' : 'Name',
+                    prefixIcon: const Icon(Icons.person_outlined),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '请输入姓名';
+                      return isZh ? '请输入姓名' : 'Please enter name';
                     }
                     return null;
                   },
@@ -259,16 +301,16 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   style: const TextStyle(fontSize: 18),
-                  decoration: const InputDecoration(
-                    labelText: '邮箱',
-                    prefixIcon: Icon(Icons.email_outlined),
+                  decoration: InputDecoration(
+                    labelText: l10n.email,
+                    prefixIcon: const Icon(Icons.email_outlined),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '请输入邮箱';
+                      return isZh ? '请输入邮箱' : 'Please enter email';
                     }
                     if (!value.contains('@')) {
-                      return '请输入有效的邮箱';
+                      return isZh ? '请输入有效的邮箱' : 'Please enter a valid email';
                     }
                     return null;
                   },
@@ -280,7 +322,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                   obscureText: _obscurePassword,
                   style: const TextStyle(fontSize: 18),
                   decoration: InputDecoration(
-                    labelText: '密码',
+                    labelText: l10n.password,
                     prefixIcon: const Icon(Icons.lock_outlined),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -295,10 +337,10 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '请输入密码';
+                      return isZh ? '请输入密码' : 'Please enter password';
                     }
                     if (value.length < 6) {
-                      return '密码至少6位';
+                      return isZh ? '密码至少6位' : 'Password must be at least 6 characters';
                     }
                     return null;
                   },
@@ -309,13 +351,13 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                   controller: _confirmPasswordController,
                   obscureText: _obscurePassword,
                   style: const TextStyle(fontSize: 18),
-                  decoration: const InputDecoration(
-                    labelText: '确认密码',
-                    prefixIcon: Icon(Icons.lock_outlined),
+                  decoration: InputDecoration(
+                    labelText: isZh ? '确认密码' : 'Confirm Password',
+                    prefixIcon: const Icon(Icons.lock_outlined),
                   ),
                   validator: (value) {
                     if (value != _passwordController.text) {
-                      return '两次密码不一致';
+                      return isZh ? '两次密码不一致' : 'Passwords do not match';
                     }
                     return null;
                   },
@@ -333,7 +375,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                             color: Colors.white,
                           ),
                         )
-                      : const Text('注册'),
+                      : Text(l10n.register),
                 ),
               ],
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../data/models/subscription.dart';
 import '../providers/subscription_provider.dart';
 
@@ -14,7 +15,6 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
   @override
   void initState() {
     super.initState();
-    // Load subscription status when page opens
     Future.microtask(() {
       ref.read(subscriptionProvider.notifier).loadStatus();
     });
@@ -23,7 +23,6 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Listen for state changes to show snackbars after widget is mounted
     ref.listen<SubscriptionState>(subscriptionProvider, (prev, next) {
       if (next.mockModeSuccess || (next.error != null && next.error != prev?.error)) {
         _showSubscriptionSnackBar(next);
@@ -33,11 +32,12 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(subscriptionProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('订阅计划'),
+        title: Text(l10n.subscriptionTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
@@ -50,18 +50,16 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Current Status Banner
                   if (state.status != null && state.status!.isPaid)
-                    _buildCurrentPlanBanner(state.status!)
+                    _buildCurrentPlanBanner(state.status!, l10n)
                   else if (state.status != null && state.status!.trialDaysRemaining > 0)
-                    _buildTrialBanner(state.status!.trialDaysRemaining),
+                    _buildTrialBanner(state.status!.trialDaysRemaining, l10n),
 
                   const SizedBox(height: 24),
 
-                  // Pricing Header
-                  const Text(
-                    '选择您的健康守护计划',
-                    style: TextStyle(
+                  Text(
+                    l10n.chooseYourHealthPlan,
+                    style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
                     ),
@@ -70,8 +68,8 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                   const SizedBox(height: 8),
                   Text(
                     state.selectedTab == 1 
-                        ? '🏠 家庭版：子女可实时查看父母训练进度'
-                        : '🎯 每天10分钟，AI私教在家守护爸妈健康',
+                        ? '🏠 ${l10n.familyPlan}'
+                        : '🎯 AI personal trainer at home',
                     style: const TextStyle(
                       fontSize: 15,
                       color: Colors.blue,
@@ -80,16 +78,13 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                   ),
                   const SizedBox(height: 24),
 
-                  // Monthly/Yearly Toggle
-                  _buildPricingToggle(state),
+                  _buildPricingToggle(state, l10n),
                   const SizedBox(height: 24),
 
-                  // Plan Cards
-                  _buildPlanCards(state),
+                  _buildPlanCards(state, l10n),
                   const SizedBox(height: 24),
 
-                  // FAQ Section
-                  _buildFAQSection(),
+                  _buildFAQSection(l10n),
                   const SizedBox(height: 32),
                 ],
               ),
@@ -97,7 +92,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
     );
   }
 
-  Widget _buildCurrentPlanBanner(SubscriptionStatus status) {
+  Widget _buildCurrentPlanBanner(SubscriptionStatus status, AppLocalizations l10n) {
     final plan = SubscriptionPlans.getById(status.planType);
     return Container(
       padding: const EdgeInsets.all(16),
@@ -115,7 +110,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '当前计划: ${plan?.name ?? status.planType}',
+                  '${l10n.personalPlan}: ${plan?.name ?? status.planType}',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.green.shade700,
@@ -123,7 +118,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                 ),
                 if (status.currentPeriodEnd != null)
                   Text(
-                    '有效期至: ${_formatDate(status.currentPeriodEnd!)}',
+                    'Valid until: ${_formatDate(status.currentPeriodEnd!)}',
                     style: TextStyle(color: Colors.green.shade600, fontSize: 13),
                   ),
               ],
@@ -134,7 +129,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
     );
   }
 
-  Widget _buildTrialBanner(int daysRemaining) {
+  Widget _buildTrialBanner(int daysRemaining, AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -151,14 +146,14 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '免费试用中',
+                  l10n.freeTrialActivated,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.orange.shade700,
                   ),
                 ),
                 Text(
-                  '剩余 $daysRemaining 天 • 之后将自动转为付费订阅',
+                  '$daysRemaining days remaining',
                   style: TextStyle(color: Colors.orange.shade600, fontSize: 13),
                 ),
               ],
@@ -169,7 +164,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
     );
   }
 
-  Widget _buildPricingToggle(SubscriptionState state) {
+  Widget _buildPricingToggle(SubscriptionState state, AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
@@ -191,7 +186,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                       : null,
                 ),
                 child: Text(
-                  '月付',
+                  l10n.monthly,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -217,7 +212,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '年付',
+                      l10n.yearly,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: state.selectedTab == 1 ? Colors.black : Colors.grey,
@@ -232,7 +227,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Text(
-                          '省25%',
+                          'Save 25%',
                           style: TextStyle(color: Colors.white, fontSize: 11),
                         ),
                       ),
@@ -247,19 +242,19 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
     );
   }
 
-  Widget _buildPlanCards(SubscriptionState state) {
+  Widget _buildPlanCards(SubscriptionState state, AppLocalizations l10n) {
     final isYearly = state.selectedTab == 1;
 
     return Column(
       children: SubscriptionPlans.all.map((plan) {
-        return _buildPlanCard(plan, isYearly, state);
+        return _buildPlanCard(plan, isYearly, state, l10n);
       }).toList(),
     );
   }
 
-  Widget _buildPlanCard(SubscriptionPlan plan, bool isYearly, SubscriptionState state) {
+  Widget _buildPlanCard(SubscriptionPlan plan, bool isYearly, SubscriptionState state, AppLocalizations l10n) {
     final price = isYearly ? plan.yearlyPrice : plan.monthlyPrice;
-    final pricePeriod = isYearly ? '/年' : '/月';
+    final pricePeriod = isYearly ? '/year' : '/month';
     final originalPrice = isYearly ? plan.monthlyPrice * 12 : null;
 
     return Container(
@@ -281,20 +276,19 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
       ),
       child: Column(
         children: [
-          // Recommended Badge
           if (plan.isRecommended)
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.blue,
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(14),
                   topRight: Radius.circular(14),
                 ),
               ),
               child: const Text(
-                '⭐ 推荐',
+                '⭐ Recommended',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -308,28 +302,29 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Plan Name & Price
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          plan.name,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            plan.name,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        Text(
-                          plan.description,
-                          style: TextStyle(
-                            color: Colors.grey.shade600,
-                            fontSize: 13,
+                          Text(
+                            plan.description,
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 13,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -352,7 +347,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                 if (originalPrice != null) ...[
                   const SizedBox(height: 4),
                   Text(
-                    '原价 \$${originalPrice.toStringAsFixed(2)}',
+                    'Original \$${originalPrice.toStringAsFixed(2)}',
                     style: TextStyle(
                       color: Colors.grey.shade500,
                       decoration: TextDecoration.lineThrough,
@@ -365,7 +360,6 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                 const Divider(),
                 const SizedBox(height: 12),
 
-                // Features
                 ...plan.features.map((feature) => Padding(
                       padding: const EdgeInsets.only(bottom: 8),
                       child: Row(
@@ -376,9 +370,11 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                             size: 20,
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            feature.replaceFirst('✓ ', ''),
-                            style: const TextStyle(fontSize: 14),
+                          Expanded(
+                            child: Text(
+                              feature.replaceFirst('✓ ', ''),
+                              style: const TextStyle(fontSize: 14),
+                            ),
                           ),
                         ],
                       ),
@@ -386,7 +382,6 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
 
                 const SizedBox(height: 16),
 
-                // Subscribe Button
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -402,7 +397,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                       ),
                     ),
                     child: Text(
-                      state.isLoading ? '处理中...' : '立即订阅',
+                      state.isLoading ? 'Processing...' : l10n.selectPlan,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -411,10 +406,9 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                   ),
                 ),
 
-                // 7-day free trial note
                 const SizedBox(height: 8),
                 Text(
-                  '前7天免费试用，不满意可取消',
+                  '7-day free trial, cancel anytime',
                   style: TextStyle(
                     color: Colors.grey.shade500,
                     fontSize: 12,
@@ -429,34 +423,22 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
     );
   }
 
-  Widget _buildFAQSection() {
+  Widget _buildFAQSection(AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          '常见问题',
+          'FAQ',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 16),
-        _buildFAQItem(
-          '如何取消订阅？',
-          '您可以随时在个人中心取消订阅，取消后仍可使用剩余订阅期限。',
-        ),
-        _buildFAQItem(
-          '7天免费试用如何工作？',
-          '首次订阅可享受7天免费试用，试用期内可随时取消且不收取费用。',
-        ),
-        _buildFAQItem(
-          '家庭计划如何添加成员？',
-          '订阅家庭计划后，您可以通过家庭邀请码最多添加3位家庭成员。',
-        ),
-        _buildFAQItem(
-          '订阅后可以切换计划吗？',
-          '可以，您可以在订阅期间切换个人计划和家庭计划。',
-        ),
+        _buildFAQItem('How to cancel?', 'You can cancel anytime in your account settings.'),
+        _buildFAQItem('How does free trial work?', 'Start with 7 days free, cancel anytime without charge.'),
+        _buildFAQItem('How to add family members?', 'Generate a family invite code to add up to 3 members.'),
+        _buildFAQItem('Can I switch plans?', 'Yes, you can switch between Personal and Family plans anytime.'),
       ],
     );
   }
@@ -497,7 +479,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
             children: [
               const Icon(Icons.check_circle, color: Colors.white),
               const SizedBox(width: 8),
-              Text('🎉 7天免费试用已激活！'),
+              Text(AppLocalizations.of(context)!.freeTrialActivated),
             ],
           ),
           backgroundColor: Colors.green,
@@ -508,7 +490,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
     } else if (state.error != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('订阅失败: ${state.error}'),
+          content: Text(AppLocalizations.of(context)!.subscriptionFailed),
           backgroundColor: Colors.red,
         ),
       );

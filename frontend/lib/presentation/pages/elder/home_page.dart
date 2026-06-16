@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../providers/course_provider.dart';
 import '../../providers/training_provider.dart';
 import '../../providers/subscription_provider.dart';
+import '../../providers/locale_provider.dart';
 import '../../widgets/course_card.dart';
 import '../../widgets/progress_chart.dart';
 import '../subscription_page.dart';
@@ -26,10 +28,32 @@ class _ElderHomePageState extends ConsumerState<ElderHomePage> {
     ));
     final weeklyProgress = ref.watch(weeklyProgressProvider);
 
+    final l10n = AppLocalizations.of(context)!;
+    final currentLocale = ref.watch(localeProvider);
+    
     return Scaffold(
       appBar: AppBar(
-        title: const Text('力量训练'),
+        title: Text(l10n.strengthTraining),
         actions: [
+          // Language Toggle
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            child: TextButton(
+              onPressed: () {
+                ref.read(localeProvider.notifier).toggleLocale();
+              },
+              child: Row(
+                children: [
+                  const Icon(Icons.language, size: 20),
+                  const SizedBox(width: 4),
+                  Text(
+                    currentLocale.languageCode == 'zh' ? 'EN' : '中',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
           IconButton(
             icon: const Icon(Icons.person_outlined),
             onPressed: () {
@@ -61,20 +85,20 @@ class _ElderHomePageState extends ConsumerState<ElderHomePage> {
               ),
 
               // Subscription Banner (only show for free users)
-              _buildSubscriptionBanner(),
+              _buildSubscriptionBanner(l10n),
 
               // Course Filter
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   children: [
-                    _buildFilterChip(0, '全部'),
+                    _buildFilterChip(0, 'All', '全部'),
                     const SizedBox(width: 8),
-                    _buildFilterChip(1, '★☆☆☆☆'),
+                    _buildFilterChip(1, '⭐', ''),
                     const SizedBox(width: 8),
-                    _buildFilterChip(2, '★★☆☆☆'),
+                    _buildFilterChip(2, '⭐⭐', ''),
                     const SizedBox(width: 8),
-                    _buildFilterChip(3, '★★★☆☆'),
+                    _buildFilterChip(3, '⭐⭐⭐', ''),
                   ],
                 ),
               ),
@@ -87,7 +111,7 @@ class _ElderHomePageState extends ConsumerState<ElderHomePage> {
                     return const Center(
                       child: Padding(
                         padding: EdgeInsets.all(32),
-                        child: Text('暂无课程'),
+                        child: Text(l10n.noCourses),
                       ),
                     );
                   }
@@ -120,7 +144,7 @@ class _ElderHomePageState extends ConsumerState<ElderHomePage> {
                 error: (error, _) => Center(
                   child: Padding(
                     padding: const EdgeInsets.all(32),
-                    child: Text('加载失败: $error'),
+                    child: Text(l10n.loadFailed(error.toString())),
                   ),
                 ),
               ),
@@ -252,8 +276,9 @@ class _ElderHomePageState extends ConsumerState<ElderHomePage> {
     );
   }
 
-  Widget _buildFilterChip(int difficulty, String label) {
+  Widget _buildFilterChip(int difficulty, String labelEn, String labelZh) {
     final isSelected = _selectedDifficulty == difficulty;
+    final label = Localizations.localeOf(context).languageCode == 'zh' ? labelZh : labelEn;
     return GestureDetector(
       onTap: () {
         setState(() => _selectedDifficulty = difficulty);
@@ -278,7 +303,7 @@ class _ElderHomePageState extends ConsumerState<ElderHomePage> {
     );
   }
 
-  Widget _buildSubscriptionBanner() {
+  Widget _buildSubscriptionBanner(AppLocalizations l10n) {
     // TODO: Get actual subscription status from provider
     // For now, always show the banner for demo purposes
     const showBanner = true;
@@ -337,9 +362,9 @@ class _ElderHomePageState extends ConsumerState<ElderHomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        '🏠 升级家庭守护版',
-                        style: TextStyle(
+                      Text(
+                        l10n.upgradeToPremium,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -347,7 +372,7 @@ class _ElderHomePageState extends ConsumerState<ElderHomePage> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'AI实时反馈动作 + 子女远程查看训练进度',
+                        l10n.aiRealTimeFeedback,
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.9),
                           fontSize: 13,
@@ -365,9 +390,9 @@ class _ElderHomePageState extends ConsumerState<ElderHomePage> {
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Text(
-                              '家庭版 最多4人共享',
-                              style: TextStyle(
+                            child: Text(
+                              l10n.familyPlanFeature,
+                              style: const TextStyle(
                                 color: Colors.deepOrange,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
@@ -375,9 +400,9 @@ class _ElderHomePageState extends ConsumerState<ElderHomePage> {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          const Text(
-                            '每月仅需 \$14.99',
-                            style: TextStyle(
+                          Text(
+                            '${l10n.only} \$14.99',
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
                             ),
