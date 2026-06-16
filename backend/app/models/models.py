@@ -181,3 +181,26 @@ class Subscription(Base):
 
     # Relationships
     user = relationship("User", back_populates="subscription")
+
+
+class CourseProgress(Base):
+    """Track user's course completion progress."""
+    __tablename__ = "course_progress"
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    user_id = Column(GUID(), ForeignKey("users.id"), nullable=False)
+    course_id = Column(GUID(), ForeignKey("courses.id"), nullable=False)
+    completion_count = Column(Integer, default=0)  # Number of times completed (need ≥3 to master)
+    is_mastered = Column(Boolean, default=False)  # True when completion_count >= 3
+    mastered_at = Column(DateTime, nullable=True)  # When the course was mastered
+    last_completed_at = Column(DateTime, nullable=True)  # Last completion timestamp
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Relationships
+    user = relationship("User")
+    course = relationship("Course")
+
+    __table_args__ = (
+        UniqueConstraint('user_id', 'course_id', name='uq_user_course_progress'),
+    )

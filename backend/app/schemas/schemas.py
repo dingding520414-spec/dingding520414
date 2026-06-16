@@ -128,6 +128,36 @@ class CourseListResponse(BaseModel):
     total: int
 
 
+# ============ Course Progress (MUST be before Training schemas) ============
+class CourseProgressItem(BaseModel):
+    course_id: UUID
+    course_title: str
+    completion_count: int
+    is_mastered: bool
+    mastered_at: Optional[datetime] = None
+    last_completed_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class CourseProgressResponse(BaseModel):
+    total_courses: int
+    mastered_courses: int  # Number of courses with is_mastered=True
+    completion_percentage: float  # 0-100
+    courses: List[CourseProgressItem]
+
+
+class CourseMasteryResponse(BaseModel):
+    course_id: UUID
+    course_title: str
+    completion_count: int
+    is_mastered: bool
+    required_completions: int = 3
+    progress_percentage: float  # completion_count / required_completions * 100
+    message: str  # e.g., "再来2次就能掌握本课程了！"
+
+
 # ============ Training ============
 class TrainingStartRequest(BaseModel):
     course_id: UUID
@@ -148,6 +178,7 @@ class TrainingCompleteResponse(BaseModel):
     duration_sec: int
     ai_score: Optional[int] = None
     checkin_id: UUID
+    course_progress: Optional[CourseMasteryResponse] = None
 
 
 class AIFeedbackRequest(BaseModel):
@@ -156,7 +187,7 @@ class AIFeedbackRequest(BaseModel):
 
 
 class AIFeedbackResponse(BaseModel):
-    score: int # 0-100
+    score: int  # 0-100
     feedback_text: str
     suggestions: List[str] = []
 
