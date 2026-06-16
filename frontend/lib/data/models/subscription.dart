@@ -70,7 +70,7 @@ class SubscriptionPlans {
     yearlyPrice: 89.99,
     maxMembers: 1,
     features: [
-      '✓ 全部10节课程',
+      '✓ 全部20节课程',
       '✓ AI 姿态检测反馈',
       '✓ 训练进度追踪',
       '✓ 成就徽章系统',

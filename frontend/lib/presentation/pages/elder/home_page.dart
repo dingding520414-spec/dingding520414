@@ -347,7 +347,7 @@ class _ElderHomePageState extends ConsumerState<ElderHomePage> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '解锁全部10节课程和AI姿态检测',
+                        '解锁全部20节课程和AI姿态检测',
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.9),
                           fontSize: 13,
