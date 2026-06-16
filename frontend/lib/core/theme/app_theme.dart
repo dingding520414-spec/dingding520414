@@ -72,9 +72,9 @@ class AppTheme {
         foregroundColor: AppColors.textPrimary,
         titleTextStyle: _textStyle(fontSize: 20, fontWeight: FontWeight.w600),
       ),
-      cardTheme: CardThemeData(
+      cardTheme: CardTheme(
         elevation: 2,
-        shadowColor: AppColors.textTertiary.withValues(alpha: 0.1),
+        shadowColor: AppColors.textTertiary.withOpacity(0.1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
@@ -111,7 +111,7 @@ class AppTheme {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: AppColors.textTertiary.withValues(alpha: 0.5)),
+          borderSide: BorderSide(color: AppColors.textTertiary.withOpacity(0.5)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),

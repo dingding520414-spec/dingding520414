@@ -183,7 +183,9 @@ COURSES_DATA = [
 def seed_courses():
     """Seed the database with initial courses."""
     # Ensure data directory exists
-    os.makedirs(os.path.dirname(settings.DATABASE_URL.replace("sqlite+aiosqlite:///", "")), exist_ok=True)
+    os.makedirs("data", exist_ok=True)
+    
+    sync_engine = create_engine(settings.SYNC_DATABASE_URL)
     
     # Create tables
     Base.metadata.create_all(sync_engine)

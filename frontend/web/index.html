@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SeniorStrength</title>
+  <meta name="description" content="中老年力量训练APP">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <script>
+    window.addEventListener('load', function() {
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: { serviceWorkerVersion: 'flutter_service_worker.js' },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+  <script src="main.dart.js" type="application/javascript"></script>
+</body>
+</html>
