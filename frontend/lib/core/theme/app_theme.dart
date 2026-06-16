@@ -72,7 +72,7 @@ class AppTheme {
         foregroundColor: AppColors.textPrimary,
         titleTextStyle: _textStyle(fontSize: 20, fontWeight: FontWeight.w600),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 2,
         shadowColor: AppColors.textTertiary.withOpacity(0.1),
         shape: RoundedRectangleBorder(
