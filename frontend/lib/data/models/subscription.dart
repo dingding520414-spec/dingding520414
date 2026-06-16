@@ -64,33 +64,33 @@ class SubscriptionStatus {
 class SubscriptionPlans {
   static const personal = SubscriptionPlan(
     id: 'personal',
-    name: '个人计划',
-    description: '适合单独训练的用户',
+    name: '💪 个人强身计划',
+    description: 'AI私教随时指导，动作准确不受伤',
     monthlyPrice: 9.99,
     yearlyPrice: 89.99,
     maxMembers: 1,
     features: [
-      '✓ 全部20节课程',
-      '✓ AI 姿态检测反馈',
-      '✓ 训练进度追踪',
-      '✓ 成就徽章系统',
-      '✓ 每日训练提醒',
+      '✓ 全部20节课程（249分钟）',
+      '✓ AI动作实时反馈（私教级指导）',
+      '✓ 课程掌握追踪+成就徽章',
+      '✓ 每日训练提醒养成习惯',
+      '✓ 7天免费试用',
     ],
   );
 
   static const family = SubscriptionPlan(
     id: 'family',
-    name: '家庭计划',
-    description: '最多4个家庭成员共享',
+    name: '🏆 家庭守护计划',
+    description: '送父母一个私人教练+24小时健康守护',
     monthlyPrice: 14.99,
     yearlyPrice: 129.99,
     maxMembers: 4,
     features: [
-      '✓ 个人计划全部功能',
-      '✓ 最多4个家庭成员',
-      '✓ 子女端查看父母进度',
-      '✓ 家庭训练提醒',
-      '✓ 优先客服支持',
+      '✓ 全部20节课程 + AI动作实时反馈',
+      '✓ 最多4人共享，全家一起练',
+      '✓ 子女随时查看父母训练进度',
+      '✓ 每日提醒养成锻炼习惯',
+      '✓ 跌倒预防+平衡训练',
     ],
     isRecommended: true,
   );

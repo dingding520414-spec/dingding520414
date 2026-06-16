@@ -338,7 +338,7 @@ class _ElderHomePageState extends ConsumerState<ElderHomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        '升级到专业版',
+                        '🏠 升级家庭守护版',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -347,7 +347,7 @@ class _ElderHomePageState extends ConsumerState<ElderHomePage> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '解锁全部20节课程和AI姿态检测',
+                        'AI实时反馈动作 + 子女远程查看训练进度',
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.9),
                           fontSize: 13,
@@ -366,7 +366,7 @@ class _ElderHomePageState extends ConsumerState<ElderHomePage> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: const Text(
-                              '前7天免费',
+                              '家庭版 最多4人共享',
                               style: TextStyle(
                                 color: Colors.deepOrange,
                                 fontSize: 12,
@@ -376,7 +376,7 @@ class _ElderHomePageState extends ConsumerState<ElderHomePage> {
                           ),
                           const SizedBox(width: 8),
                           const Text(
-                            '每月仅需 \$9.99',
+                            '每月仅需 \$14.99',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 12,

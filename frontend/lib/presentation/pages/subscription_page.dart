@@ -60,19 +60,21 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
 
                   // Pricing Header
                   const Text(
-                    '选择您的计划',
+                    '选择您的健康守护计划',
                     style: TextStyle(
-                      fontSize: 28,
+                      fontSize: 26,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    '解锁全部课程和高级功能',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
+                  Text(
+                    state.selectedTab == 1 
+                        ? '🏠 家庭版：子女可实时查看父母训练进度'
+                        : '🎯 每天10分钟，AI私教在家守护爸妈健康',
+                    style: const TextStyle(
+                      fontSize: 15,
+                      color: Colors.blue,
                     ),
                     textAlign: TextAlign.center,
                   ),
