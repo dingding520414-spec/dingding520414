@@ -1,15 +1,12 @@
 workflows:
   ios-debug:
-    name: iOS Debug Build
+    name: iOS Debug Build (Simulator)
     max_build_duration: 90
     instance_type: mac_mini_m2
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
-      groups:
-        - codemagic
-    cache: []
     triggering:
       events:
         - push
@@ -24,14 +21,17 @@ workflows:
           cd frontend
           rm -rf ios/Pods ios/Podfile.lock ios/.symlinks build .dart_tool
           rm -rf ~/Library/Developer/Xcode/DerivedData/Runner-*
-      - name: Fetch dependencies
+      - name: Fetch Flutter dependencies
         script: |
           cd frontend
           flutter pub get
-      - name: Build iOS
+      - name: Get Flutter packages
         script: |
           cd frontend
-          xcrun simctl list devices available | head -20
+          flutter pub get --no-precompile
+      - name: Build iOS for Simulator
+        script: |
+          cd frontend
           flutter build ios --simulator --no-codesign 2>&1
     artifacts:
       - frontend/build/ios/iphonesimulator/Runner.app
@@ -51,9 +51,6 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
-      groups:
-        - codemagic
-    cache: []
     triggering:
       events:
         - push
@@ -71,14 +68,17 @@ workflows:
           cd frontend
           rm -rf ios/Pods ios/Podfile.lock ios/.symlinks build .dart_tool
           rm -rf ~/Library/Developer/Xcode/DerivedData/Runner-*
-      - name: Fetch dependencies
+      - name: Fetch Flutter dependencies
         script: |
           cd frontend
           flutter pub get
-      - name: Build iOS
+      - name: Get Flutter packages
         script: |
           cd frontend
-          xcrun simctl list devices available | head -20
+          flutter pub get --no-precompile
+      - name: Build iOS for Simulator
+        script: |
+          cd frontend
           flutter build ios --simulator --no-codesign 2>&1
     artifacts:
       - frontend/build/ios/iphonesimulator/Runner.app

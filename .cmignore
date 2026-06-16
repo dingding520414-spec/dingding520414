@@ -1,0 +1,17 @@
+# Exclude these from build context - only Flutter frontend is needed
+backend/
+memory/
+*.md
+docs/
+*.bat
+*.sh
+.git/
+*.gitignore
+*.code-workspace
+.vscode/
+.idea/
+*.log
+*.db
+*.sqlite
+venv/
+node_modules/
