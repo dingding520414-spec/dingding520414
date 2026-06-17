@@ -53,5 +53,7 @@
 	<string>SeniorStrength需要保存训练进度截图到您的照片库</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>我们使用此信息来提供个性化广告体验</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>SeniorStrength需要使用麦克风进行语音指导功能</string>
 </dict>
 </plist>
