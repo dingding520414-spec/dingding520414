@@ -1,4 +1,4 @@
-// Basic widget test placeholder for SeniorStrength app
+// Basic widget test placeholder for Ageless Strength app
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

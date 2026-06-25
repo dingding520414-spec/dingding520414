@@ -131,7 +131,7 @@ def test_family(token):
 
 def main():
     print("=" * 50)
-    print("  SeniorStrength API自动化测试")
+    print("  Ageless Strength API自动化测试")
     print("=" * 50)
     
     try:

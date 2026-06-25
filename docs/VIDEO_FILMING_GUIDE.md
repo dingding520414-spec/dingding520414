@@ -1,4 +1,4 @@
-# SeniorStrength 视频录制指南
+# Ageless Strength 视频录制指南
 
 > 本指南帮助你用手机自主录制 10 节力量训练课程视频，零成本完成视频素材准备。
 

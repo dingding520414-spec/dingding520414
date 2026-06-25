@@ -1,4 +1,4 @@
-# SeniorStrength - English Video Narration Scripts
+# Ageless Strength - English Video Narration Scripts
 
 ## Video 01: Chair Squat for Beginners
 **Filename:** 01_chair_squat.mp4

@@ -7,7 +7,7 @@ import os
 class Settings(BaseSettings):
     """Application configuration."""
 
-    APP_NAME: str = "SeniorStrength API"
+    APP_NAME: str = "Ageless Strength API"
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = True
 

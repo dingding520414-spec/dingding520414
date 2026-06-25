@@ -1,10 +1,12 @@
-# SeniorStrength - 中老年力量训练APP
+# Ageless Strength - AI Strength Training APP
 
-北美市场 55+ 老人居家力量训练 + AI姿态检测 + 家庭账号 + 订阅制
+欧美市场 55+ 老人居家力量训练 + AI姿态检测 + 家庭账号 + 订阅制
+
+**欧美品牌名：Ageless Strength** | Strength Training for Every Age
 
 ## 项目状态
 
-**Phase 1-2 ✅ 完成** |等待Windows上验证 | Phase 3-6 待完成
+**Phase 1-2 ✅ 完成** | 等待Windows验证 | Phase 3-6 待完成
 
 ---
 

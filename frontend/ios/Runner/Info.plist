@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>SeniorStrength</string>
+	<string>Ageless Strength</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>SeniorStrength</string>
+	<string>Ageless Strength</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -46,14 +46,14 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>SeniorStrength需要使用相机来检测您的运动姿态，帮助您正确完成训练动作</string>
+	<string>Ageless Strength需要使用相机来检测您的运动姿态，帮助您正确完成训练动作</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>SeniorStrength需要访问照片库来保存您的训练记录</string>
+	<string>Ageless Strength需要访问照片库来保存您的训练记录</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>SeniorStrength需要保存训练进度截图到您的照片库</string>
+	<string>Ageless Strength需要保存训练进度截图到您的照片库</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>我们使用此信息来提供个性化广告体验</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>SeniorStrength需要使用麦克风进行语音指导功能</string>
+	<string>Ageless Strength需要使用麦克风进行语音指导功能</string>
 </dict>
 </plist>

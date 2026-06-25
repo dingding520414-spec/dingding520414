@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-SeniorStrength 20 Courses Database Seeder
+Ageless Strength 20 Courses Database Seeder
 运行此脚本更新数据库到20节课程完整版本
 
 使用方法:
@@ -193,7 +193,7 @@ def seed_exercises(conn):
     print(f'  共添加 {total_added} 个动作')
 
 def main():
-    print('=== SeniorStrength 20 Courses 数据库更新 ===\n')
+    print('=== Ageless Strength 20 Courses 数据库更新 ===\n')
     
     conn = sqlite3.connect(DATABASE_PATH)
     

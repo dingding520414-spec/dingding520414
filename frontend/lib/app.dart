@@ -9,8 +9,8 @@ import 'presentation/providers/locale_provider.dart';
 import 'presentation/pages/elder/home_page.dart';
 import 'presentation/pages/auth/login_page.dart';
 
-class SeniorStrengthApp extends ConsumerWidget {
-  const SeniorStrengthApp({super.key});
+class AgelessStrengthApp extends ConsumerWidget {
+  const AgelessStrengthApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,7 +18,7 @@ class SeniorStrengthApp extends ConsumerWidget {
     final authState = ref.watch(authStateProvider);
 
     return MaterialApp(
-      title: 'SeniorStrength',
+      title: 'Ageless Strength',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       locale: locale,

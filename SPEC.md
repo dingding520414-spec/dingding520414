@@ -1,4 +1,7 @@
-# SPEC.md — 中老年力量训练APP（SeniorStrength）
+# SPEC.md — Ageless Strength
+
+> 欧美市场品牌名：**Ageless Strength** | Strength Training for Every Age
+> 内部开发代号：**SeniorStrength**（项目目录保留原名）
 
 ## 1. 产品概述
 
