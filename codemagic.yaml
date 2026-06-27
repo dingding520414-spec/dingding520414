@@ -1,4 +1,42 @@
 workflows:
+  android-debug:
+    name: Android Debug Build
+    max_build_duration: 90
+    instance_type: mac_mini_m2
+    environment:
+      flutter: stable
+      android: latest
+    triggering:
+      events:
+        - push
+        - pull_request
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+    scripts:
+      - name: Clean Android build
+        script: |
+          cd frontend
+          rm -rf build .dart_tool
+      - name: Fetch Flutter dependencies
+        script: |
+          cd frontend
+          flutter pub get
+      - name: Build Android APK
+        script: |
+          cd frontend
+          flutter build apk --debug 2>&1
+    artifacts:
+      - frontend/build/app/outputs/flutter-apk/*.apk
+    publishing:
+      email:
+        recipients:
+          - dingding520414@hotmail.com
+        notify:
+          success: true
+          failure: true
+
   ios-debug:
     name: iOS Debug Build (Simulator)
     max_build_duration: 90
